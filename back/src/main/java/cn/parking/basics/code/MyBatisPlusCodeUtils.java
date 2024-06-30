@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author zjl
- *
+ *  
  */
 @Slf4j
 @ApiOperation(value = "后端代码生成器执行类")
@@ -19,14 +19,14 @@ public class MyBatisPlusCodeUtils {
     }
 
     @ApiModelProperty(value = "类名")
-    private static final String CLASS_NAME = "FeeScale";
+    private static final String CLASS_NAME = "ParkingInfo";
 
     @ApiModelProperty(value = "类备注")
-    private static final String DESCRIPTION = "收费标准";
+    private static final String DESCRIPTION = "停车信息";
 
     @ApiModelProperty(value = "生成路径")
     private static final String CLASS_PATH = "cn.parking.park";
 
     @ApiModelProperty(value = "是否删除代码")
-    private static final Boolean REMOVE_FLAG = true;
+    private static final Boolean REMOVE_FLAG = false;
 }

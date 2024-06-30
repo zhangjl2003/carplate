@@ -27,7 +27,8 @@ public class FeeScale extends ZwzBaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-//    @ApiModelProperty(value = "收费标准id")
+    @ApiModelProperty(value = "收费标准类型")
+    private String feeType;
 
     @ApiModelProperty(value = "免费时间")
     private String freeTime;

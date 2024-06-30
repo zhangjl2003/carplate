@@ -11,6 +11,9 @@
               :label-width="0"
               style="display:flex;"
             >
+              <Form-item label="" prop="feeType">
+                <Input type="text" v-model="searchForm.feeType" placeholder="收费标准类型" clearable style="width: 150px"/>
+              </Form-item>
               <Form-item label="" prop="freeTime">
                 <Input type="text" v-model="searchForm.freeTime" placeholder="免费时间" clearable style="width: 150px"/>
               </Form-item>
@@ -154,6 +157,7 @@ export default {
     selected: [
         "选择",
         "序号",
+        "收费标准类型",
         "免费时间",
         "起步费用",
         "超时费用",
@@ -200,6 +204,13 @@ export default {
               1
           );
         },
+      },
+      {
+        title: "收费标准类型",
+        key: "feeType",
+        minWidth: 180,
+        tooltip: true,
+        sortable: false,
       },
       {
         title: "免费时间",

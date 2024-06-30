@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author zjl
- *  
+ *
  */
 @ApiOperation(value = "代码生成器基础类")
 @Data
