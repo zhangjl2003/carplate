@@ -66,13 +66,13 @@
         <div class="loginDown">
             <p style="margin-top:10px">帮助 | 隐私 | 条款</p>
             <p>
-                <span>Copyright © 2020 - 至今 XXX 版权所有</span>
+                <span>Copyright © 2024 - 至今 zjl tbc版权所有</span>
                 <span style="display:inline-block; width:4px;height:6px"></span>
-                <a target="_blank" href="https://beian.miit.gov.cn" style="color:#848585">ICP备案 浙ICP备XXXXXXXX号</a>
+                <!-- <a target="_blank" href="https://beian.miit.gov.cn" style="color:#ffffff">ICP备案 鲁ICP备XXXXXXXX号</a>
                 <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=XXXXXXXXXXXXXX号">
                     <img src="../assets/login/gonganlogo.png" style="margin-left:6px" />
-                    <p style="display:inline-block;color:#848585">浙公网安备 XXXXXXXXXXXXXX号</p>
-                </a>
+                    <p style="display:inline-block;color:#ffffff">鲁公网安备 XXXXXXXXXXXXXX号</p> -->
+                <!-- </a> -->
             </p>
         </div>
     </Row>
@@ -210,7 +210,7 @@ export default {
 
 <style lang="less">
 html,body{
-    background: #ffffff !important;
+    background: #f7f7f7 !important;
     font-family: Microsoft YaHei;
     font-weight: 400;;
 }
@@ -243,9 +243,9 @@ a:hover{
         zoom: 1;
     }
     .loginUp{
-       width: 1200px;
-       min-height: 80px;
-       background-color:#ffffff;
+       width: 1800px;
+       min-height: 100px;
+       background-color:#087dce;
        margin: 0 auto;
        overflow: hidden;
     }
@@ -267,13 +267,13 @@ a:hover{
         font-size: 18px;
         font-family: Microsoft YaHei;
         font-weight: 500;
-        color: #999999;
+        color: #ffffff;
     }
     .loginMiddle{
         width: 100%;
-        height: 780px;
+        height: 800px;
         margin: 0 auto; 
-        background-color: #2E8B57;
+        background-color: #bddde6;
         overflow: hidden;
         // background: linear-gradient(45deg, rgba(2, 173, 168, 0.17), rgba(0, 221, 215, 0.17)); 
     }     
@@ -307,10 +307,10 @@ a:hover{
         padding: 0px 30px;
     }
     .loginDown{
-        width: 1200px;
+        width: 1800px;
         height: auto;
         margin: 0 auto;
-        
+        background-color: #087dce;
     }
     .loginTab{
         margin-top: 20px;
@@ -330,7 +330,7 @@ a:hover{
         width: 86px !important;
         border-radius: 2px;
         margin: 0px 42px;
-        background-color: #2E8B57;
+        background-color: #0074f8;
     }
     .ivu-tabs-nav .ivu-tabs-tab-active,.ivu-tabs-nav .ivu-tabs-tab:hover{
         color: #333333;   
@@ -348,8 +348,8 @@ a:hover{
     .login-btn{
         width: 390px;
         height: 50px;
-        background: radial-gradient(circle, #77C8C6, #50C7C4);
-        border: 2px solid #61C8C5;
+        background: radial-gradient(circle, #77a9c8, #50a5c7);
+        border: 2px solid #3cbde4;
         box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.21);
         border-radius: 4px;
     }
@@ -359,7 +359,7 @@ a:hover{
     .loginBottom{
         width: 448px;
         height: 60px;      
-        background: #f9f9f9;
+        background: #ffffff;
         border-radius: 0px 0px 5px 5px;
         padding: 0px;
         position: absolute;
@@ -374,12 +374,12 @@ a:hover{
         text-align: center;       
         font-size: 12px;
         font-family: Microsoft YaHei;
-        color: #777777;
+        color: #ffffff;
         line-height: 22px;
     }
     .ivu-checkbox-checked .ivu-checkbox-inner{
-        background-color: #2E8B57;
-        border-color: #2E8B57;
+        background-color: #2e588b;
+        border-color: #2e668b;
     }
     .ivu-form-item{
         margin-bottom: 24px;
@@ -397,7 +397,7 @@ a:hover{
     }
     .ivu-input-large{
         height: 50px;  
-        color:#CFCFCF;
+        color:#1967cc;
         line-height: 50px;
     }
     .ivu-input-large{

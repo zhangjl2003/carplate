@@ -58,7 +58,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests().requestMatchers("/parking/dictData/getByType/**","/parking/file/view/**","/parking/user/regist","/parking/common/**","/*/*.js","/*/*.css","/*/*.png","/*/*.ico", "/swagger-ui.html").permitAll()
+        http.authorizeHttpRequests().requestMatchers("/parking/dictData/getByType/**","/parking/file/view/**","/parking/parkingInfo/**","/parking/user/regist","/parking/common/**","/parking/feeScale/**","/*/*.js","/*/*.css","/*/*.png","/*/*.ico", "/swagger-ui.html").permitAll()
                 .and().formLogin().loginPage("/parking/common/needLogin").loginProcessingUrl("/parking/login").permitAll()
                 .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailHandler).and()
                 .headers().frameOptions().disable().and()

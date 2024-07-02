@@ -69,7 +69,7 @@ rec_model_dir = 'paddleModels/whl/rec/ch_PP-OCRv3_rec_infer'
 ocr = PaddleOCR(use_angle_cls=False, lang="ch", det=False, cls_model_dir=cls_model_dir,rec_model_dir=rec_model_dir)
 
 # 所需加载的模型目录
-path = 'train22/weights/best.pt'
+path = 'flip_v10np.pt'
 # 加载预训练模型
 # conf	0.25	object confidence threshold for detection
 # iou	0.7	intersection over union (IoU) threshold for NMS
@@ -94,7 +94,7 @@ while cap.isOpened():
     success, frame = cap.read()
 
     if success:
-        # Run YOLOv8 inference on the frame
+        # Run YOLOv10 inference on the frame
         results = model(frame)[0]
         class_ids = results.boxes.cls.tolist()
         class_names = ['green','blue']  # 这里填充实际的类别名称列表
@@ -152,7 +152,7 @@ while cap.isOpened():
                     lisence_res.append('无法识别')
                     # 将0添加到置信度列表中，表示未识别
                     conf_list.append(0)
-            if frame_counter == 50:
+            if frame_counter == 30:
                 # 找到出现次数最多的车牌
                 most_common_plate, count = max(plate_count.items(), key=lambda x: x[1])
 
