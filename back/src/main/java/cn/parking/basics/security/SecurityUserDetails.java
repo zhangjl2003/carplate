@@ -2,7 +2,7 @@ package cn.parking.basics.security;
 
 import cn.parking.basics.parameter.CommonConstant;
 import cn.parking.data.entity.User;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.data.vo.PermissionDTO;
 import cn.parking.data.vo.RoleDTO;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +35,7 @@ public class SecurityUserDetails extends User implements UserDetails {
         // 菜单权限
         if(permissions!=null && permissions.size() > 0){
             for (PermissionDTO dto : permissions) {
-                if(!ZwzNullUtils.isNull(dto.getTitle()) && !ZwzNullUtils.isNull(dto.getPath())) {
+                if(!ANullUtils.isNull(dto.getTitle()) && !ANullUtils.isNull(dto.getPath())) {
                     grantedAuthorityList.add(new SimpleGrantedAuthority(dto.getTitle()));
                 }
             }
@@ -43,7 +43,7 @@ public class SecurityUserDetails extends User implements UserDetails {
         // 角色
         if(roles != null && roles.size() > 0){
             roles.forEach(role -> {
-                if(!ZwzNullUtils.isNull(role.getName())){
+                if(!ANullUtils.isNull(role.getName())){
                     grantedAuthorityList.add(new SimpleGrantedAuthority(role.getName()));
                 }
             });

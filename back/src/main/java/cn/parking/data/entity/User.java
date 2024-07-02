@@ -1,6 +1,6 @@
 package cn.parking.data.entity;
 
-import cn.parking.basics.baseClass.ZwzBaseEntity;
+import cn.parking.basics.baseClass.ABaseEntity;
 import cn.parking.basics.parameter.CommonConstant;
 import cn.parking.data.vo.PermissionDTO;
 import cn.parking.data.vo.RoleDTO;
@@ -34,7 +34,7 @@ import java.util.List;
 @Table(name = "a_user")
 @TableName("a_user")
 @ApiModel(value = "用户")
-public class User extends ZwzBaseEntity {
+public class User extends ABaseEntity {
 
     private static final long serialVersionUID = 1L;
 

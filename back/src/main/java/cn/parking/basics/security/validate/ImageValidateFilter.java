@@ -2,7 +2,7 @@ package cn.parking.basics.security.validate;
 
 import cn.parking.basics.utils.ResponseUtil;
 import cn.parking.basics.parameter.CaptchaProperties;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -54,12 +54,12 @@ public class ImageValidateFilter extends OncePerRequestFilter {
         }
         String verificationCodeId = request.getParameter("captchaId");
         String userInputCode = request.getParameter("code");
-        if(ZwzNullUtils.isNull(userInputCode) || ZwzNullUtils.isNull(verificationCodeId)){
+        if(ANullUtils.isNull(userInputCode) || ANullUtils.isNull(verificationCodeId)){
             ResponseUtil.out(response, ResponseUtil.resultMap(RESPONSE_FAIL_FLAG,RESPONSE_CODE_FAIL_CODE,"验证码为空"));
             return;
         }
         String codeAnsInRedis = redisTemplate.opsForValue().get(verificationCodeId);
-        if(ZwzNullUtils.isNull(codeAnsInRedis)){
+        if(ANullUtils.isNull(codeAnsInRedis)){
             ResponseUtil.out(response, ResponseUtil.resultMap(RESPONSE_FAIL_FLAG,RESPONSE_CODE_FAIL_CODE,"已过期的验证码，需要重新填写"));
             return;
         }

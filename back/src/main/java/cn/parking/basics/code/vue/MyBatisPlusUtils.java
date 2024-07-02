@@ -2,8 +2,8 @@ package cn.parking.basics.code.vue;
 
 import cn.hutool.core.date.DateUtil;
 import cn.parking.basics.code.bean.Entity;
-import cn.parking.basics.exception.ZwzException;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.basics.exception.AException;
+import cn.parking.data.utils.ANullUtils;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -253,7 +253,7 @@ public class MyBatisPlusUtils {
 
     @ApiOperation(value = "驼峰法转下划线")
     public static String camel2Underline(String camelContext) {
-        if (ZwzNullUtils.isNull(camelContext)) {
+        if (ANullUtils.isNull(camelContext)) {
             return "";
         }
         if(Objects.equals(1,camelContext.length())){
@@ -272,8 +272,8 @@ public class MyBatisPlusUtils {
 
     @ApiOperation(value = "首字母是否大小写")
     public static String name(String classTitle, boolean isFirstUpper){
-        if(ZwzNullUtils.isNull(classTitle)){
-            throw new ZwzException("类名的长度必须是正数");
+        if(ANullUtils.isNull(classTitle)){
+            throw new AException("类名的长度必须是正数");
         }
         if(Objects.equals(1,classTitle.length())){
             return isFirstUpper ? classTitle.toUpperCase() : classTitle.toLowerCase();

@@ -44,12 +44,12 @@ spring:
       port: 6379
 intercept:
   verification:
-    - /zwz/login
-    - /zwz/user/regist
+    - /A/login
+    - /A/user/regist
   wechat:
-    - /zwz/user/smsLogin
-    - /zwz/user/resetByMobile
-    - /zwz/user/changeMobile
+    - /A/user/smsLogin
+    - /A/user/resetByMobile
+    - /A/user/changeMobile
 mybatis-plus:
   global-config:
     db-config:

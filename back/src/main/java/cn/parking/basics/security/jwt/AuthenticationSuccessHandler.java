@@ -4,9 +4,9 @@ import cn.parking.basics.log.SystemLog;
 import cn.parking.basics.log.LogType;
 import cn.parking.basics.utils.ResponseUtil;
 import cn.parking.basics.baseVo.TokenUser;
-import cn.parking.basics.parameter.ZwzLoginProperties;
+import cn.parking.basics.parameter.ALoginProperties;
 import cn.hutool.core.util.StrUtil;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Autowired
-    private ZwzLoginProperties tokenProperties;
+    private ALoginProperties tokenProperties;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -55,9 +55,9 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
     @ApiOperation(value = "登录成功回调")
     @SystemLog(about = "登录系统", type = LogType.LOGIN)
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication ac) throws IOException, ServletException {
-        String saveLogin = request.getParameter(ZwzLoginProperties.SAVE_LOGIN_PRE);
+        String saveLogin = request.getParameter(ALoginProperties.SAVE_LOGIN_PRE);
         Boolean saveLoginFlag = false;
-        if(!ZwzNullUtils.isNull(saveLogin) && Objects.equals(saveLogin,"true")){
+        if(!ANullUtils.isNull(saveLogin) && Objects.equals(saveLogin,"true")){
             saveLoginFlag = true;
         }
         List<String> permissionsList = new ArrayList<>();
@@ -74,17 +74,17 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         }
         // 单点登录判断
         if(tokenProperties.getSsoFlag()){
-            String oldToken = redisTemplate.opsForValue().get(ZwzLoginProperties.USER_TOKEN_PRE + username);
+            String oldToken = redisTemplate.opsForValue().get(ALoginProperties.USER_TOKEN_PRE + username);
             if(StrUtil.isNotBlank(oldToken)){
-                redisTemplate.delete(ZwzLoginProperties.HTTP_TOKEN_PRE + oldToken);
+                redisTemplate.delete(ALoginProperties.HTTP_TOKEN_PRE + oldToken);
             }
         }
         if(saveLoginFlag){
-            redisTemplate.opsForValue().set(ZwzLoginProperties.USER_TOKEN_PRE + username, token, tokenProperties.getUserSaveLoginTokenDays(), TimeUnit.DAYS);
-            redisTemplate.opsForValue().set(ZwzLoginProperties.HTTP_TOKEN_PRE + token, JSON.toJSONString(user), tokenProperties.getUserSaveLoginTokenDays(), TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(ALoginProperties.USER_TOKEN_PRE + username, token, tokenProperties.getUserSaveLoginTokenDays(), TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(ALoginProperties.HTTP_TOKEN_PRE + token, JSON.toJSONString(user), tokenProperties.getUserSaveLoginTokenDays(), TimeUnit.DAYS);
         }else{
-            redisTemplate.opsForValue().set(ZwzLoginProperties.USER_TOKEN_PRE + username, token, tokenProperties.getUserTokenInvalidDays(), TimeUnit.MINUTES);
-            redisTemplate.opsForValue().set(ZwzLoginProperties.HTTP_TOKEN_PRE + token, JSON.toJSONString(user), tokenProperties.getUserTokenInvalidDays(), TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(ALoginProperties.USER_TOKEN_PRE + username, token, tokenProperties.getUserTokenInvalidDays(), TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(ALoginProperties.HTTP_TOKEN_PRE + token, JSON.toJSONString(user), tokenProperties.getUserTokenInvalidDays(), TimeUnit.MINUTES);
         }
         ResponseUtil.out(response, ResponseUtil.resultMap(RESPONSE_SUCCESS_FLAG,RESPONSE_SUCCESS_CODE,"登录成功", token));
     }

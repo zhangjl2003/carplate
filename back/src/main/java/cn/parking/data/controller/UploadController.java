@@ -6,7 +6,7 @@ import cn.parking.basics.utils.*;
 import cn.parking.data.entity.Setting;
 import cn.parking.data.service.IFileService;
 import cn.parking.data.service.ISettingService;
-import cn.parking.data.utils.ZwzFileUtils;
+import cn.parking.data.utils.AFileUtils;
 import cn.parking.basics.baseVo.Result;
 import cn.parking.data.entity.File;
 import cn.hutool.core.util.StrUtil;
@@ -31,7 +31,7 @@ import java.io.InputStream;
 public class UploadController {
 
     @Autowired
-    private ZwzFileUtils zwzFileUtils;
+    private AFileUtils AFileUtils;
 
     @Autowired
     private ISettingService iSettingService;
@@ -51,7 +51,7 @@ public class UploadController {
         File f = new File();
         try {
             InputStream inputStream = file.getInputStream();
-            result = zwzFileUtils.inputStreamUpload(inputStream, fKey, file);
+            result = AFileUtils.inputStreamUpload(inputStream, fKey, file);
             f.setLocation(0);
             f.setName(file.getOriginalFilename());
             f.setSize(file.getSize());

@@ -1,7 +1,7 @@
 package cn.parking.basics.code.vue;
 
 import cn.hutool.core.util.StrUtil;
-import cn.parking.basics.exception.ZwzException;
+import cn.parking.basics.exception.AException;
 import cn.parking.basics.utils.ResultUtil;
 import cn.parking.basics.baseVo.Result;
 import cn.parking.basics.code.bean.Field;
@@ -25,7 +25,7 @@ import java.util.*;
 @RestController
 @Api(tags = "Vue代码生成")
 @RequestMapping(value = "/parking/generate")
-public class ZwzVueGenerator {
+public class AVueGenerator {
 
     @RequestMapping(value = "/table/{vueName}/{rowNum}", method = RequestMethod.POST)
     @ApiOperation(value = "生成前端Vue表格代码")
@@ -260,7 +260,7 @@ public class ZwzVueGenerator {
             }
         } else{
             // 不满足的情况
-            throw new ZwzException("一行的输入栏只能为1到4列");
+            throw new AException("一行的输入栏只能为1到4列");
         }
         return tableTemplate.render();
     }
@@ -274,7 +274,7 @@ public class ZwzVueGenerator {
     public static String name(String name, boolean isFirstUpper){
 
         if(StrUtil.isBlank(name)){
-            throw new ZwzException("name不能为空");
+            throw new AException("name不能为空");
         }
 
         if(name.length()==1){

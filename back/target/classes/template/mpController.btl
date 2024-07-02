@@ -4,7 +4,7 @@ import cn.parking.basics.utils.PageUtil;
 import cn.parking.basics.utils.ResultUtil;
 import cn.parking.basics.baseVo.PageVo;
 import cn.parking.basics.baseVo.Result;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import ${entity.entityPackage}.${entity.className};
 import ${entity.servicePackage}.I${entity.className}Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -54,7 +54,7 @@ public class ${entity.className}Controller {
     @ApiOperation(value = "查询${entity.description}")
     public Result<IPage<${entity.className}>> getByPage(@ModelAttribute ${entity.className} ${entity.classNameLowerCase} ,@ModelAttribute PageVo page){
         QueryWrapper<${entity.className}> qw = new QueryWrapper<>();
-        if(!ZwzNullUtils.isNull(${entity.classNameLowerCase}.getCreateBy())) {
+        if(!ANullUtils.isNull(${entity.classNameLowerCase}.getCreateBy())) {
         }
         IPage<${entity.className}> data = i${entity.className}Service.page(PageUtil.initMpPage(page),qw);
         return new ResultUtil<IPage<${entity.className}>>().setData(data);

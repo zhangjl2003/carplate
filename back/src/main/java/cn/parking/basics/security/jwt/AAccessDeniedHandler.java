@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @ApiOperation(value = "自定义权限文案")
 @Component
-public class ZwzAccessDeniedHandler implements AccessDeniedHandler {
+public class AAccessDeniedHandler implements AccessDeniedHandler {
 
     private static final boolean RESPONSE_FAIL_FLAG = false;
 

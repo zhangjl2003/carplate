@@ -1,6 +1,6 @@
 package cn.parking.data.entity;
 
-import cn.parking.basics.baseClass.ZwzBaseEntity;
+import cn.parking.basics.baseClass.ABaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -27,7 +27,7 @@ import java.util.List;
 @Table(name = "a_department")
 @TableName("a_department")
 @ApiModel(value = "部门")
-public class Department extends ZwzBaseEntity {
+public class Department extends ABaseEntity {
 
     private static final long serialVersionUID = 1L;
 

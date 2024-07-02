@@ -1,14 +1,14 @@
 package cn.parking.basics.utils;
 
-import cn.parking.basics.exception.ZwzException;
+import cn.parking.basics.exception.AException;
 import cn.parking.basics.baseVo.TokenUser;
-import cn.parking.basics.parameter.ZwzLoginProperties;
+import cn.parking.basics.parameter.ALoginProperties;
 import cn.parking.basics.redis.RedisTemplateHelper;
 import cn.parking.data.entity.*;
 import cn.parking.data.service.IPermissionService;
 import cn.parking.data.service.IRoleService;
 import cn.parking.data.service.IUserService;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.data.vo.PermissionDTO;
 import cn.parking.data.vo.RoleDTO;
 import cn.hutool.core.util.StrUtil;
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 public class SecurityUtil {
 
     @Autowired
-    private ZwzLoginProperties tokenProperties;
+    private ALoginProperties tokenProperties;
 
     @Autowired
     private RedisTemplateHelper redisTemplate;
@@ -88,8 +88,8 @@ public class SecurityUtil {
 
     @ApiOperation(value = "获取新的用户Token")
     public String getToken(String username, Boolean saveLogin){
-        if(ZwzNullUtils.isNull(username)){
-            throw new ZwzException("username不能为空");
+        if(ANullUtils.isNull(username)){
+            throw new AException("username不能为空");
         }
         boolean saved = false;
         if(saveLogin == null || saveLogin){
@@ -100,7 +100,7 @@ public class SecurityUtil {
         List<String> permissionTitleList = new ArrayList<>();
         if(tokenProperties.getSaveRoleFlag()){
             for(PermissionDTO p : selectUser.getPermissions()){
-                if(!ZwzNullUtils.isNull(p.getTitle()) && !ZwzNullUtils.isNull(p.getPath())) {
+                if(!ANullUtils.isNull(p.getTitle()) && !ANullUtils.isNull(p.getPath())) {
                     permissionTitleList.add(p.getTitle());
                 }
             }
@@ -112,18 +112,18 @@ public class SecurityUtil {
         TokenUser tokenUser = new TokenUser(selectUser.getUsername(), permissionTitleList, saved);
         // 单点登录删除旧Token
         if(tokenProperties.getSsoFlag()) {
-            String oldToken = redisTemplate.get(ZwzLoginProperties.USER_TOKEN_PRE + selectUser.getUsername());
+            String oldToken = redisTemplate.get(ALoginProperties.USER_TOKEN_PRE + selectUser.getUsername());
             if (StrUtil.isNotBlank(oldToken)) {
-                redisTemplate.delete(ZwzLoginProperties.HTTP_TOKEN_PRE + oldToken);
+                redisTemplate.delete(ALoginProperties.HTTP_TOKEN_PRE + oldToken);
             }
         }
         // 保存至Redis备查
         if(saved){
-            redisTemplate.set(ZwzLoginProperties.USER_TOKEN_PRE + selectUser.getUsername(), ansUserToken, tokenProperties.getUserSaveLoginTokenDays(), TimeUnit.DAYS);
-            redisTemplate.set(ZwzLoginProperties.HTTP_TOKEN_PRE + ansUserToken, JSON.toJSONString(tokenUser), tokenProperties.getUserSaveLoginTokenDays(), TimeUnit.DAYS);
+            redisTemplate.set(ALoginProperties.USER_TOKEN_PRE + selectUser.getUsername(), ansUserToken, tokenProperties.getUserSaveLoginTokenDays(), TimeUnit.DAYS);
+            redisTemplate.set(ALoginProperties.HTTP_TOKEN_PRE + ansUserToken, JSON.toJSONString(tokenUser), tokenProperties.getUserSaveLoginTokenDays(), TimeUnit.DAYS);
         }else{
-            redisTemplate.set(ZwzLoginProperties.USER_TOKEN_PRE + selectUser.getUsername(), ansUserToken, tokenProperties.getUserTokenInvalidDays(), TimeUnit.MINUTES);
-            redisTemplate.set(ZwzLoginProperties.HTTP_TOKEN_PRE + ansUserToken, JSON.toJSONString(tokenUser), tokenProperties.getUserTokenInvalidDays(), TimeUnit.MINUTES);
+            redisTemplate.set(ALoginProperties.USER_TOKEN_PRE + selectUser.getUsername(), ansUserToken, tokenProperties.getUserTokenInvalidDays(), TimeUnit.MINUTES);
+            redisTemplate.set(ALoginProperties.HTTP_TOKEN_PRE + ansUserToken, JSON.toJSONString(tokenUser), tokenProperties.getUserTokenInvalidDays(), TimeUnit.MINUTES);
         }
         return ansUserToken;
     }
@@ -149,7 +149,7 @@ public class SecurityUtil {
     public User getCurrUser(){
         Object selectUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(Objects.equals("anonymousUser",selectUser.toString())){
-            throw new ZwzException("登录失效");
+            throw new AException("登录失效");
         }
         UserDetails user = (UserDetails) selectUser;
         return selectByUserName(user.getUsername());

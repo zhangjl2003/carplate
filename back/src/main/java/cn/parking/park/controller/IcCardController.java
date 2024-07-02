@@ -8,7 +8,7 @@ import cn.parking.basics.baseVo.Result;
 import cn.parking.basics.utils.SecurityUtil;
 import cn.parking.data.entity.User;
 import cn.parking.data.service.IUserService;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.park.entity.IcCard;
 import cn.parking.park.service.IIcCardService;
 import cn.hutool.core.util.StrUtil;
@@ -73,10 +73,10 @@ public class IcCardController {
         if(iUserService.count(userQw) < 1L) {
             qw.eq("user_id",currUser.getId());
         }
-        if(!ZwzNullUtils.isNull(icCard.getCarNumber())) {
+        if(!ANullUtils.isNull(icCard.getCarNumber())) {
             qw.like("car_number",icCard.getCarNumber());
         }
-        if(!ZwzNullUtils.isNull(icCard.getWorkUser())) {
+        if(!ANullUtils.isNull(icCard.getWorkUser())) {
             qw.like("work_user",icCard.getWorkUser());
         }
         IPage<IcCard> data = iIcCardService.page(PageUtil.initMpPage(page),qw);

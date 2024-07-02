@@ -6,7 +6,7 @@ import cn.parking.basics.utils.PageUtil;
 import cn.parking.basics.utils.ResultUtil;
 import cn.parking.basics.baseVo.PageVo;
 import cn.parking.basics.baseVo.Result;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.data.vo.AntvVo;
 import cn.parking.test.entity.Teacher;
 import cn.parking.test.service.ITeacherService;
@@ -64,13 +64,13 @@ public class TeacherController {
     @ApiOperation(value = "查询教师")
     public Result<IPage<Teacher>> getByPage(@ModelAttribute Teacher teacher ,@ModelAttribute PageVo page){
         QueryWrapper<Teacher> qw = new QueryWrapper<>();
-        if(!ZwzNullUtils.isNull(teacher.getName())) {
+        if(!ANullUtils.isNull(teacher.getName())) {
             qw.like("name",teacher.getName());
         }
-        if(!ZwzNullUtils.isNull(teacher.getEducation())) {
+        if(!ANullUtils.isNull(teacher.getEducation())) {
             qw.eq("education",teacher.getEducation());
         }
-        if(!ZwzNullUtils.isNull(teacher.getGraduated())) {
+        if(!ANullUtils.isNull(teacher.getGraduated())) {
             qw.like("graduated",teacher.getGraduated());
         }
         IPage<Teacher> data = iTeacherService.page(PageUtil.initMpPage(page),qw);

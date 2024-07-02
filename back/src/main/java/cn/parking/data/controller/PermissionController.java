@@ -10,7 +10,7 @@ import cn.parking.basics.baseVo.Result;
 import cn.parking.data.entity.*;
 import cn.parking.data.service.*;
 import cn.parking.data.utils.VoUtil;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.data.vo.MenuVo;
 import cn.parking.data.vo.UserByPermissionVo;
 import com.alibaba.fastjson2.JSON;
@@ -125,7 +125,7 @@ public class PermissionController {
         User currUser = securityUtil.getCurrUser();
         String keyInRedis = "permission::userMenuList:" + currUser.getId();
         String valueInRedis = redisTemplateHelper.get(keyInRedis);
-        if(!ZwzNullUtils.isNull(valueInRedis)){
+        if(!ANullUtils.isNull(valueInRedis)){
             return new ResultUtil<List<MenuVo>>().setData(JSON.parseArray(valueInRedis,MenuVo.class));
         }
         // 拥有的菜单列表
@@ -275,7 +275,7 @@ public class PermissionController {
         if(Objects.equals(CommonConstant.PERMISSION_NAV,permission.getType())) {
             // 顶级菜单添加标识
             permission.setParentId("0");
-            if(ZwzNullUtils.isNull(permission.getPath())) {
+            if(ANullUtils.isNull(permission.getPath())) {
                 permission.setPath(permission.getName());
             }
             permission.setDescription("");

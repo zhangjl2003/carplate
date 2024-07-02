@@ -1,7 +1,7 @@
 package cn.parking.basics.utils;
 
-import cn.parking.basics.exception.ZwzException;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.basics.exception.AException;
+import cn.parking.data.utils.ANullUtils;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 
@@ -128,8 +128,8 @@ public class CreateVerifyCode {
 
     @ApiOperation(value = "图片生成工具类")
     private void creatImage(String code) {
-        if(ZwzNullUtils.isNull(code)){
-            throw new ZwzException("图形验证码过期了，再生成个新的哦!");
+        if(ANullUtils.isNull(code)){
+            throw new AException("图形验证码过期了，再生成个新的哦!");
         }
         this.code = code;
         buffImg = new BufferedImage(imagePeripheralWidth, imagePeripheralHeight, BufferedImage.TYPE_INT_RGB);

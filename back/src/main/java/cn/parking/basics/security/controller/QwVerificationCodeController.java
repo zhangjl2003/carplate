@@ -6,7 +6,7 @@ import cn.parking.basics.log.SystemLog;
 import cn.parking.basics.redis.RedisTemplateHelper;
 import cn.parking.basics.security.SecurityUserDetails;
 import cn.parking.basics.security.utils.WeiChatUtils;
-import cn.parking.basics.security.utils.ZwzWxNoticeUtils;
+import cn.parking.basics.security.utils.AWxNoticeUtils;
 import cn.parking.basics.utils.CommonUtil;
 import cn.parking.basics.utils.ResultUtil;
 import cn.parking.basics.utils.SecurityUtil;
@@ -47,7 +47,7 @@ public class QwVerificationCodeController {
     @ApiOperation(value = "发送企微验证码")
     @RequestMapping(value = "/sendVerificationCode", method = RequestMethod.GET)
     public Result<Object> sendVerificationCode(@RequestParam String jobNumber) {
-        if(!Objects.equals("zwz",jobNumber)) {
+        if(!Objects.equals("A",jobNumber)) {
             return ResultUtil.error("请联系管理员配置您的工号");
         }
         QueryWrapper<User> userQw = new QueryWrapper<>();
@@ -61,7 +61,7 @@ public class QwVerificationCodeController {
         /**
          * 这里需要实现判断发给谁的业务逻辑
          */
-        ZwzWxNoticeUtils.sendTuWenMessage("zwz", "OA登录验证","验证码 " + verificationCode + "，1分钟后失效","https://gitee.com/yyzwz","https://bkimg.cdn.bcebos.com/pic/37d12f2eb9389b503a80d4b38b35e5dde6116ed7", WeiChatUtils.getToken());
+        AWxNoticeUtils.sendTuWenMessage("A", "OA登录验证","验证码 " + verificationCode + "，1分钟后失效","https://gitee.com/yyA","https://bkimg.cdn.bcebos.com/pic/37d12f2eb9389b503a80d4b38b35e5dde6116ed7", WeiChatUtils.getToken());
         redisTemplate.set("qwsms:" + jobNumber,verificationCode,60, TimeUnit.SECONDS);
         return ResultUtil.success();
     }

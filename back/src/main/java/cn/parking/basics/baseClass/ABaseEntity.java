@@ -33,7 +33,7 @@ import java.util.Date;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
-public abstract class ZwzBaseEntity implements Serializable{
+public abstract class ABaseEntity implements Serializable{
 
     private static final long serialVersionUID = 1L;
 

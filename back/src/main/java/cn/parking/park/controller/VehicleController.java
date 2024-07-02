@@ -7,7 +7,7 @@ import cn.parking.basics.baseVo.Result;
 import cn.parking.basics.utils.SecurityUtil;
 import cn.parking.data.entity.User;
 import cn.parking.data.service.IUserService;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.park.entity.Vehicle;
 import cn.parking.park.service.IVehicleService;
 import cn.hutool.core.util.StrUtil;
@@ -71,13 +71,13 @@ public class VehicleController {
         if(iUserService.count(userQw) < 1L) {
             qw.eq("owner_id",currUser.getId());
         }
-        if(!ZwzNullUtils.isNull(vehicle.getCarNumber())) {
+        if(!ANullUtils.isNull(vehicle.getCarNumber())) {
             qw.like("car_number",vehicle.getCarNumber());
         }
-        if(!ZwzNullUtils.isNull(vehicle.getCarType())) {
+        if(!ANullUtils.isNull(vehicle.getCarType())) {
             qw.like("car_type",vehicle.getCarType());
         }
-        if(!ZwzNullUtils.isNull(vehicle.getOwnerName())) {
+        if(!ANullUtils.isNull(vehicle.getOwnerName())) {
             qw.like("owner_name",vehicle.getOwnerName());
         }
         IPage<Vehicle> data = iVehicleService.page(PageUtil.initMpPage(page),qw);

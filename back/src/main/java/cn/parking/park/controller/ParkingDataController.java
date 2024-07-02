@@ -7,7 +7,7 @@ import cn.parking.basics.baseVo.Result;
 import cn.parking.basics.utils.SecurityUtil;
 import cn.parking.data.entity.User;
 import cn.parking.data.service.IUserService;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.park.entity.IcCard;
 import cn.parking.park.entity.ParkingData;
 import cn.parking.park.entity.Vehicle;
@@ -81,10 +81,10 @@ public class ParkingDataController {
         if(iUserService.count(userQw) < 1L) {
             qw.eq("owner_id",currUser.getId());
         }
-        if(!ZwzNullUtils.isNull(parkingData.getCarNumber())) {
+        if(!ANullUtils.isNull(parkingData.getCarNumber())) {
             qw.like("car_number",parkingData.getCarNumber());
         }
-        if(!ZwzNullUtils.isNull(parkingData.getOwner())) {
+        if(!ANullUtils.isNull(parkingData.getOwner())) {
             qw.like("owner",parkingData.getOwner());
         }
         IPage<ParkingData> data = iParkingDataService.page(PageUtil.initMpPage(page),qw);

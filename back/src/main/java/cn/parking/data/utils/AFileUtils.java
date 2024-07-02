@@ -1,6 +1,6 @@
 package cn.parking.data.utils;
 
-import cn.parking.basics.exception.ZwzException;
+import cn.parking.basics.exception.AException;
 import cn.parking.data.entity.Setting;
 import cn.parking.data.service.ISettingService;
 import cn.hutool.core.date.DateUtil;
@@ -20,7 +20,7 @@ import java.io.*;
  */
 @Api(tags = "本地文件工具类")
 @Component
-public class ZwzFileUtils implements FileManage {
+public class AFileUtils implements FileManage {
 
     @Autowired
     private ISettingService iSettingService;
@@ -30,7 +30,7 @@ public class ZwzFileUtils implements FileManage {
     public static void view(String url, HttpServletResponse response){
         File viewFile = new File(url);
         if (!viewFile.exists()) {
-            throw new ZwzException("没有文件");
+            throw new AException("没有文件");
         }
         try (FileInputStream is = new FileInputStream(viewFile); BufferedInputStream bis = new BufferedInputStream(is)) {
             OutputStream out = response.getOutputStream();
@@ -40,7 +40,7 @@ public class ZwzFileUtils implements FileManage {
                 out.write(buf, 0, bytesRead);
             }
         } catch (IOException e) {
-            throw new ZwzException("读取下载文件出错" + e);
+            throw new AException("读取下载文件出错" + e);
         }
     }
 
@@ -55,13 +55,13 @@ public class ZwzFileUtils implements FileManage {
         }
         File f = new File(path + LOCAL_FILE_PATH_STEP + key);
         if(f.exists()){
-            throw new ZwzException("文件名称重复");
+            throw new AException("文件名称重复");
         }
         try {
             file.transferTo(f);
             return path + LOCAL_FILE_PATH_STEP + key;
         } catch (IOException e) {
-            throw new ZwzException("上传文件出错 " + e);
+            throw new AException("上传文件出错 " + e);
         }
     }
 

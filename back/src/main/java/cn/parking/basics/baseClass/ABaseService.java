@@ -13,9 +13,9 @@ import java.util.List;
  */
 @ApiOperation(value = "模板服务层")
 @FunctionalInterface
-public interface ZwzBaseService<E, ID extends Serializable> {
+public interface ABaseService<E, ID extends Serializable> {
 
-    ZwzBaseDao<E, ID> getRepository();
+    ABaseDao<E, ID> getRepository();
 
     @ApiOperation(value = "查询")
     default E get(ID id) {

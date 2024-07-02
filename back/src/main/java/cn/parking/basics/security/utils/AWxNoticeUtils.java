@@ -1,6 +1,6 @@
 package cn.parking.basics.security.utils;
 
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +16,7 @@ import java.util.List;
  *  
  */
 @ApiOperation(value = "企微消息发送消息工具类")
-public class ZwzWxNoticeUtils {
+public class AWxNoticeUtils {
 
     private static final String BASE_URL = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=";
 
@@ -27,11 +27,11 @@ public class ZwzWxNoticeUtils {
 
     @ApiOperation(value = "发送文本消息")
     public static String sendInputMessage(int company,String userId,String content,String token){
-        if(content == null || ZwzNullUtils.isNull(content)) {
+        if(content == null || ANullUtils.isNull(content)) {
             return "NULL";
         }
 
-        String json = JSON.toJSONString(new ZwzWeChatNoticeInput(userId,"text",YH_CORPID,new ZwzWeChatNoticeInputItem(content),0,1));
+        String json = JSON.toJSONString(new AWeChatNoticeInput(userId,"text",YH_CORPID,new AWeChatNoticeInputItem(content),0,1));
         String s= WeiChatUtils.httpsRequest(BASE_URL + token,"POST",json);
         System.out.println(s);
         JSONObject ans1 = JSONObject.parseObject(s);
@@ -63,7 +63,7 @@ public class ZwzWxNoticeUtils {
 
     @ApiOperation(value = "发送图片消息")
     public static String sendImageMessage(int company,String userId,String mediaId,String token) {
-        ZwzWeiChatNoticeImage image = new ZwzWeiChatNoticeImage(userId,"image",YH_CORPID,new ZwzWeChatNoticeImageItem(mediaId),0,1);
+        AWeiChatNoticeImage image = new AWeiChatNoticeImage(userId,"image",YH_CORPID,new AWeChatNoticeImageItem(mediaId),0,1);
         String json = JSON.toJSONString(image);
         String s= WeiChatUtils.httpsRequest(BASE_URL + token,"POST",json);
         JSONObject ans1 = JSONObject.parseObject(s);
@@ -78,7 +78,7 @@ public class ZwzWxNoticeUtils {
 
     @ApiOperation(value = "发送视频消息")
     public static String sendVideoMessage(int company,String userId,String mediaId,String title,String description,String token) {
-        ZwzWeiChatNoticeVideo video = new ZwzWeiChatNoticeVideo(userId,"video",YH_CORPID,new ZwzWeChatNoticeVideoItem(mediaId,title,description),0,1);
+        AWeiChatNoticeVideo video = new AWeiChatNoticeVideo(userId,"video",YH_CORPID,new AWeChatNoticeVideoItem(mediaId,title,description),0,1);
         String json = JSON.toJSONString(video);
         String s= WeiChatUtils.httpsRequest(BASE_URL + token,"POST",json);
         JSONObject ans1 = JSONObject.parseObject(s);
@@ -93,7 +93,7 @@ public class ZwzWxNoticeUtils {
 
     @ApiOperation(value = "发送文件消息")
     public static String sendFileMessage(int company,String userId,String mediaId,String token) {
-        ZwzWeiChatNoticeFile file = new ZwzWeiChatNoticeFile(userId,"file",YH_CORPID,new ZwzWeChatNoticeFileItem(mediaId),0,1);
+        AWeiChatNoticeFile file = new AWeiChatNoticeFile(userId,"file",YH_CORPID,new AWeChatNoticeFileItem(mediaId),0,1);
         String json = JSON.toJSONString(file);
         String s= WeiChatUtils.httpsRequest(BASE_URL + token,"POST",json);
         JSONObject ans1 = JSONObject.parseObject(s);
@@ -108,7 +108,7 @@ public class ZwzWxNoticeUtils {
 
     @ApiOperation(value = "发送文本卡片消息")
     public static String sendTextCardMessage(int company,String userId,String title,String description,String url,String btntxt,String token) {
-        ZwzWeiChatNoticeTextCard file = new ZwzWeiChatNoticeTextCard(userId,"textcard",YH_CORPID,new ZwzWeChatNoticeTextCardItem(title,description,url,btntxt),0,1);
+        AWeiChatNoticeTextCard file = new AWeiChatNoticeTextCard(userId,"textcard",YH_CORPID,new AWeChatNoticeTextCardItem(title,description,url,btntxt),0,1);
         String json = JSON.toJSONString(file);
         String s= WeiChatUtils.httpsRequest(BASE_URL + token,"POST",json);
         JSONObject ans1 = JSONObject.parseObject(s);
@@ -123,9 +123,9 @@ public class ZwzWxNoticeUtils {
 
     @ApiOperation(value = "发送图文消息")
     public static String sendTuWenMessage(String userId,String title,String description,String url,String picUrl,String token) {
-        List<ZwzWeChatNoticeTuWenItemValue> tuWenList = new ArrayList<>();
-        tuWenList.add(new ZwzWeChatNoticeTuWenItemValue(title, description, url, picUrl));
-        ZwzWeChatNoticeTuWen file = new ZwzWeChatNoticeTuWen(userId,"news","1000002",new ZwzWeChatNoticeTuWenItem(tuWenList),0,1);
+        List<AWeChatNoticeTuWenItemValue> tuWenList = new ArrayList<>();
+        tuWenList.add(new AWeChatNoticeTuWenItemValue(title, description, url, picUrl));
+        AWeChatNoticeTuWen file = new AWeChatNoticeTuWen(userId,"news","1000002",new AWeChatNoticeTuWenItem(tuWenList),0,1);
         String json = JSON.toJSONString(file);
         String s= WeiChatUtils.httpsRequest(BASE_URL + token,"POST",json);
         JSONObject ans1 = JSONObject.parseObject(s);
@@ -140,10 +140,10 @@ public class ZwzWxNoticeUtils {
 
     @ApiOperation(value = "发送Markdown消息")
     public static String sendMarkdownMessage(int company,String userId,String content,String token){
-        if(content == null || ZwzNullUtils.isNull(content)) {
+        if(content == null || ANullUtils.isNull(content)) {
             return "NULL";
         }
-        String json = JSON.toJSONString(new ZwzWeChatNoticeMarkdown(userId,"markdown",YH_CORPID,new ZwzWeChatNoticeMarkdownItem(content),0,1));
+        String json = JSON.toJSONString(new AWeChatNoticeMarkdown(userId,"markdown",YH_CORPID,new AWeChatNoticeMarkdownItem(content),0,1));
         String s= WeiChatUtils.httpsRequest(BASE_URL + token,"POST",json);
         System.out.println(s);
         JSONObject ans1 = JSONObject.parseObject(s);
@@ -161,11 +161,11 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeMarkdown {
+    private static class AWeChatNoticeMarkdown {
         private String touser;
         private String msgtype;
         private String agentid;
-        private ZwzWeChatNoticeMarkdownItem markdown;
+        private AWeChatNoticeMarkdownItem markdown;
         private int safe;
         private int enable_duplicate_check;
     }
@@ -175,7 +175,7 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeMarkdownItem {
+    private static class AWeChatNoticeMarkdownItem {
         private String content;
     }
 
@@ -184,11 +184,11 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeTuWen {
+    private static class AWeChatNoticeTuWen {
         private String touser;
         private String msgtype;
         private String agentid;
-        private ZwzWeChatNoticeTuWenItem news;
+        private AWeChatNoticeTuWenItem news;
         private int safe;
         private int enable_duplicate_check;
     }
@@ -198,8 +198,8 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeTuWenItem {
-        private List<ZwzWeChatNoticeTuWenItemValue> articles;
+    private static class AWeChatNoticeTuWenItem {
+        private List<AWeChatNoticeTuWenItemValue> articles;
     }
 
     /**
@@ -207,7 +207,7 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeTuWenItemValue {
+    private static class AWeChatNoticeTuWenItemValue {
         private String title;
         private String description;
         private String url;
@@ -219,11 +219,11 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeiChatNoticeTextCard {
+    private static class AWeiChatNoticeTextCard {
         private String touser;
         private String msgtype;
         private String agentid;
-        private ZwzWeChatNoticeTextCardItem textcard;
+        private AWeChatNoticeTextCardItem textcard;
         private int safe;
         private int enable_duplicate_check;
     }
@@ -233,7 +233,7 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeTextCardItem {
+    private static class AWeChatNoticeTextCardItem {
         private String title;
         private String description;
         private String url;
@@ -245,11 +245,11 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeiChatNoticeFile {
+    private static class AWeiChatNoticeFile {
         private String touser;
         private String msgtype;
         private String agentid;
-        private ZwzWeChatNoticeFileItem file;
+        private AWeChatNoticeFileItem file;
         private int safe;
         private int enable_duplicate_check;
     }
@@ -259,7 +259,7 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeFileItem {
+    private static class AWeChatNoticeFileItem {
         private String media_id;
     }
 
@@ -268,11 +268,11 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeiChatNoticeVideo {
+    private static class AWeiChatNoticeVideo {
         private String touser;
         private String msgtype;
         private String agentid;
-        private ZwzWeChatNoticeVideoItem video;
+        private AWeChatNoticeVideoItem video;
         private int safe;
         private int enable_duplicate_check;
     }
@@ -282,7 +282,7 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeVideoItem {
+    private static class AWeChatNoticeVideoItem {
         private String media_id;
         private String title;
         private String description;
@@ -293,11 +293,11 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeiChatNoticeImage {
+    private static class AWeiChatNoticeImage {
         private String touser;
         private String msgtype;
         private String agentid;
-        private ZwzWeChatNoticeImageItem image;
+        private AWeChatNoticeImageItem image;
         private int safe;
         private int enable_duplicate_check;
     }
@@ -307,7 +307,7 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeImageItem {
+    private static class AWeChatNoticeImageItem {
         private String media_id;
     }
 
@@ -316,11 +316,11 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeInput {
+    private static class AWeChatNoticeInput {
         private String touser;
         private String msgtype;
         private String agentid;
-        private ZwzWeChatNoticeInputItem text;
+        private AWeChatNoticeInputItem text;
         private int safe;
         private int enable_duplicate_check;
     }
@@ -330,7 +330,7 @@ public class ZwzWxNoticeUtils {
      */
     @Data
     @AllArgsConstructor
-    private static class ZwzWeChatNoticeInputItem {
+    private static class AWeChatNoticeInputItem {
         private String content;
     }
 }

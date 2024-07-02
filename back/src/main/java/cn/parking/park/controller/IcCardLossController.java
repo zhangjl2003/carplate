@@ -7,7 +7,7 @@ import cn.parking.basics.baseVo.Result;
 import cn.parking.basics.utils.SecurityUtil;
 import cn.parking.data.entity.User;
 import cn.parking.data.service.IUserService;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.park.entity.IcCard;
 import cn.parking.park.entity.IcCardLoss;
 import cn.parking.park.service.IIcCardLossService;
@@ -76,13 +76,13 @@ public class IcCardLossController {
         if(iUserService.count(userQw) < 1L) {
             qw.eq("apply_id",currUser.getId());
         }
-        if(!ZwzNullUtils.isNull(icCardLoss.getCarNumber())) {
+        if(!ANullUtils.isNull(icCardLoss.getCarNumber())) {
             qw.like("car_number",icCardLoss.getCarNumber());
         }
-        if(!ZwzNullUtils.isNull(icCardLoss.getApplyUser())) {
+        if(!ANullUtils.isNull(icCardLoss.getApplyUser())) {
             qw.like("apply_user",icCardLoss.getApplyUser());
         }
-        if(!ZwzNullUtils.isNull(icCardLoss.getStatus())) {
+        if(!ANullUtils.isNull(icCardLoss.getStatus())) {
             qw.eq("status",icCardLoss.getStatus());
         }
         IPage<IcCardLoss> data = iIcCardLossService.page(PageUtil.initMpPage(page),qw);

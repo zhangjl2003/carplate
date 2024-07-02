@@ -1,6 +1,6 @@
 package cn.parking.park.entity;
 
-import cn.parking.basics.baseClass.ZwzBaseEntity;
+import cn.parking.basics.baseClass.ABaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
 @Table(name = "a_ic_card_loss")
 @TableName("a_ic_card_loss")
 @ApiModel(value = "IC卡挂失")
-public class IcCardLoss extends ZwzBaseEntity {
+public class IcCardLoss extends ABaseEntity {
 
     private static final long serialVersionUID = 1L;
 

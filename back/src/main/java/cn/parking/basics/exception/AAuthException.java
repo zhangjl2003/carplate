@@ -9,7 +9,7 @@ import org.springframework.security.authentication.InternalAuthenticationService
  *  
  */
 @ApiOperation(value = "自定义异常")
-public class ZwzAuthException extends InternalAuthenticationServiceException {
+public class AAuthException extends InternalAuthenticationServiceException {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,17 +18,17 @@ public class ZwzAuthException extends InternalAuthenticationServiceException {
     @ApiModelProperty(value = "异常消息内容")
     private String msg;
 
-    public ZwzAuthException(String msg){
+    public AAuthException(String msg){
         super(msg);
         this.msg = msg;
     }
 
-    public ZwzAuthException(){
+    public AAuthException(){
         super(DEFAULT_MSG);
         this.msg = DEFAULT_MSG;
     }
 
-    public ZwzAuthException(String msg, Throwable t) {
+    public AAuthException(String msg, Throwable t) {
         super(msg, t);
         this.msg = msg;
     }

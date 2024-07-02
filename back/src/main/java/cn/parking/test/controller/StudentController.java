@@ -6,7 +6,7 @@ import cn.parking.basics.utils.PageUtil;
 import cn.parking.basics.utils.ResultUtil;
 import cn.parking.basics.baseVo.PageVo;
 import cn.parking.basics.baseVo.Result;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.test.entity.Student;
 import cn.parking.test.service.IStudentService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -60,16 +60,16 @@ public class StudentController {
     @ApiOperation(value = "查询学生")
     public Result<IPage<Student>> getByPage(@ModelAttribute Student student ,@ModelAttribute PageVo page){
         QueryWrapper<Student> qw = new QueryWrapper<>();
-        if(!ZwzNullUtils.isNull(student.getName())) {
+        if(!ANullUtils.isNull(student.getName())) {
             qw.like("name",student.getName());
         }
-        if(!ZwzNullUtils.isNull(student.getNumber())) {
+        if(!ANullUtils.isNull(student.getNumber())) {
             qw.like("number",student.getNumber());
         }
-        if(!ZwzNullUtils.isNull(student.getSex())) {
+        if(!ANullUtils.isNull(student.getSex())) {
             qw.like("sex",student.getSex());
         }
-        if(!ZwzNullUtils.isNull(student.getSchool())) {
+        if(!ANullUtils.isNull(student.getSchool())) {
             qw.like("school",student.getSchool());
         }
         IPage<Student> data = iStudentService.page(PageUtil.initMpPage(page),qw);

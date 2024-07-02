@@ -2,7 +2,7 @@ package cn.parking.basics.security;
 
 import cn.parking.data.entity.User;
 import cn.parking.data.service.IUserService;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String loginFailFlag = LOGIN_FAIL_DISABLED_PRE + username;
         String value = redisTemplate.opsForValue().get(loginFailFlag);
         Long timeRest = redisTemplate.getExpire(loginFailFlag, TimeUnit.MINUTES);
-        if(!ZwzNullUtils.isNull(value)){
+        if(!ANullUtils.isNull(value)){
             throw new UsernameNotFoundException("试错超限，请您在" + timeRest + "分钟后再登");
         }
         QueryWrapper<User> userQw = new QueryWrapper<>();

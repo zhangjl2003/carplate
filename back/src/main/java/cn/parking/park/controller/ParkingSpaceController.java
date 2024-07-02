@@ -4,7 +4,7 @@ import cn.parking.basics.utils.PageUtil;
 import cn.parking.basics.utils.ResultUtil;
 import cn.parking.basics.baseVo.PageVo;
 import cn.parking.basics.baseVo.Result;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.park.entity.ParkingSpace;
 import cn.parking.park.service.IParkingSpaceService;
 import cn.hutool.core.util.StrUtil;
@@ -57,10 +57,10 @@ public class ParkingSpaceController {
     @ApiOperation(value = "查询停车位")
     public Result<IPage<ParkingSpace>> getByPage(@ModelAttribute ParkingSpace parkingSpace ,@ModelAttribute PageVo page){
         QueryWrapper<ParkingSpace> qw = new QueryWrapper<>();
-        if(!ZwzNullUtils.isNull(parkingSpace.getTitle())) {
+        if(!ANullUtils.isNull(parkingSpace.getTitle())) {
             qw.like("title",parkingSpace.getTitle());
         }
-        if(!ZwzNullUtils.isNull(parkingSpace.getStatus())) {
+        if(!ANullUtils.isNull(parkingSpace.getStatus())) {
             qw.eq("status",parkingSpace.getStatus());
         }
         IPage<ParkingSpace> data = iParkingSpaceService.page(PageUtil.initMpPage(page),qw);

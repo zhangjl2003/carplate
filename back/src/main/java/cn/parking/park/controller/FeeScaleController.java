@@ -4,7 +4,7 @@ import cn.parking.basics.utils.PageUtil;
 import cn.parking.basics.utils.ResultUtil;
 import cn.parking.basics.baseVo.PageVo;
 import cn.parking.basics.baseVo.Result;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.park.entity.FeeScale;
 import cn.parking.park.service.IFeeScaleService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -56,13 +56,13 @@ public class FeeScaleController {
     @ApiOperation(value = "查询收费标准")
     public Result<IPage<FeeScale>> getByPage(@ModelAttribute FeeScale feeScale ,@ModelAttribute PageVo page){
         QueryWrapper<FeeScale> qw = new QueryWrapper<>();
-//        if(!ZwzNullUtils.isNull(feeScale.getFree_time())) {
+//        if(!ANullUtils.isNull(feeScale.getFree_time())) {
 //            qw.like("free_time",feeScale.getFree_time());
 //        }
-//        if(!ZwzNullUtils.isNull(feeScale.getStart_price())){
+//        if(!ANullUtils.isNull(feeScale.getStart_price())){
 //            qw.like("start_price",feeScale.getStart_price());
 //        }
-//        if(!ZwzNullUtils.isNull(feeScale.getBeyond_price())){
+//        if(!ANullUtils.isNull(feeScale.getBeyond_price())){
 //            qw.like("beyond_price",feeScale.getBeyond_price());
 //        }
         IPage<FeeScale> data = iFeeScaleService.page(PageUtil.initMpPage(page),qw);

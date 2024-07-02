@@ -3,7 +3,7 @@ package cn.parking.basics.security;
 import cn.parking.basics.redis.RedisTemplateHelper;
 import cn.parking.basics.security.jwt.*;
 import cn.parking.basics.utils.SecurityUtil;
-import cn.parking.basics.parameter.ZwzLoginProperties;
+import cn.parking.basics.parameter.ALoginProperties;
 import cn.parking.basics.security.validate.ImageValidateFilter;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     @Autowired
-    private ZwzLoginProperties zwzLoginProperties;
+    private ALoginProperties ALoginProperties;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -44,7 +44,7 @@ public class WebSecurityConfig {
     private AuthenticationFailHandler authenticationFailHandler;
 
     @Autowired
-    private ZwzAccessDeniedHandler zwzAccessDeniedHandler;
+    private AAccessDeniedHandler AAccessDeniedHandler;
 
     @Autowired
     private ImageValidateFilter imageValidateFilter;
@@ -58,7 +58,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests().requestMatchers("/parking/dictData/getByType/**","/parking/file/view/**","/parking/parkingInfo/**","/parking/user/regist","/parking/common/**","/parking/feeScale/**","/*/*.js","/*/*.css","/*/*.png","/*/*.ico", "/swagger-ui.html").permitAll()
+        http.authorizeHttpRequests().requestMatchers("/parking/dictData/getByType/**","/parking/file/view/**","/parking/parkingInfo/**","/parking/parkingInfo/departure","/parking/user/regist","/parking/common/**","/parking/feeScale/**","/*/*.js","/*/*.css","/*/*.png","/*/*.ico", "/swagger-ui.html").permitAll()
                 .and().formLogin().loginPage("/parking/common/needLogin").loginProcessingUrl("/parking/login").permitAll()
                 .successHandler(authenticationSuccessHandler).failureHandler(authenticationFailHandler).and()
                 .headers().frameOptions().disable().and()
@@ -73,7 +73,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .exceptionHandling().accessDeniedHandler(zwzAccessDeniedHandler)
+                .exceptionHandling().accessDeniedHandler(AAccessDeniedHandler)
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -106,6 +106,6 @@ public class WebSecurityConfig {
 
     @Bean
     public JwtTokenOncePerRequestFilter authenticationJwtTokenFilter() throws Exception {
-        return new JwtTokenOncePerRequestFilter(redisTemplate, securityUtil, zwzLoginProperties);
+        return new JwtTokenOncePerRequestFilter(redisTemplate, securityUtil, ALoginProperties);
     }
 }

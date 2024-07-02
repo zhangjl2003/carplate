@@ -9,7 +9,7 @@ import cn.parking.data.entity.Permission;
 import cn.parking.data.entity.User;
 import cn.parking.data.service.IPermissionService;
 import cn.parking.data.service.IUserService;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
@@ -51,14 +51,14 @@ public class MyDoorController {
         user = iUserService.getById(user.getId());
         List<MyDoorMenuClass> ans = new ArrayList<>();
         String myDoor = user.getMyDoor();
-        if(ZwzNullUtils.isNull(myDoor)) {
+        if(ANullUtils.isNull(myDoor)) {
             return new ResultUtil().setData(ans);
         }
-        String[] zwz666s = myDoor.split("ZWZ666");
+        String[] A666s = myDoor.split("A666");
         List<Permission> all = iPermissionService.list();
-        for (String zwz666 : zwz666s) {
+        for (String A666 : A666s) {
             for (Permission permission : all) {
-                if(Objects.equals(permission.getName(),zwz666)) {
+                if(Objects.equals(permission.getName(),A666)) {
                     MyDoorMenuClass menu = new MyDoorMenuClass();
                     menu.setName(permission.getName());
                     menu.setTitle(permission.getTitle());
@@ -78,16 +78,16 @@ public class MyDoorController {
         user = iUserService.getById(user.getId());
         List<MyDoorMenuClass> ans = new ArrayList<>();
         String myDoor = user.getMyDoor();
-        if(ZwzNullUtils.isNull(myDoor)) {
+        if(ANullUtils.isNull(myDoor)) {
             ans.add(getNullMenu());ans.add(getNullMenu());ans.add(getNullMenu());
             ans.add(getNullMenu());ans.add(getNullMenu());ans.add(getNullMenu());
             return new ResultUtil().setData(ans);
         }
-        String[] zwz666s = myDoor.split("ZWZ666");
+        String[] A666s = myDoor.split("A666");
         List<Permission> all = iPermissionService.list();
-        for (String zwz666 : zwz666s) {
+        for (String A666 : A666s) {
             for (Permission permission : all) {
-                if(Objects.equals(permission.getName(),zwz666)) {
+                if(Objects.equals(permission.getName(),A666)) {
                     MyDoorMenuClass menu = new MyDoorMenuClass();
                     menu.setName(permission.getName());
                     menu.setTitle(permission.getTitle());
@@ -113,7 +113,7 @@ public class MyDoorController {
         User user = securityUtil.getCurrUser();
         user = iUserService.getById(user.getId());
         if(user != null) {
-            if(ZwzNullUtils.isNull(str)) {
+            if(ANullUtils.isNull(str)) {
                 user.setMyDoor("");
                 iUserService.saveOrUpdate(user);
             } else {

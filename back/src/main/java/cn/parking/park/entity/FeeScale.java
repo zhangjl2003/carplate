@@ -1,6 +1,6 @@
 package cn.parking.park.entity;
 
-import cn.parking.basics.baseClass.ZwzBaseEntity;
+import cn.parking.basics.baseClass.ABaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
 @Table(name = "a_fee_scale")
 @TableName("a_fee_scale")
 @ApiModel(value = "收费标准")
-public class FeeScale extends ZwzBaseEntity {
+public class FeeScale extends ABaseEntity {
 
     private static final long serialVersionUID = 1L;
 

@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @ApiOperation(value = "模板数据链路层")
 @NoRepositoryBean
-public interface ZwzBaseDao<E, ID extends Serializable> extends JpaRepository<E, ID>, JpaSpecificationExecutor<E> {
+public interface ABaseDao<E, ID extends Serializable> extends JpaRepository<E, ID>, JpaSpecificationExecutor<E> {
     @Override
     E getById(ID id);
 }

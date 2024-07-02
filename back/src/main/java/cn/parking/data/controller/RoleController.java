@@ -11,7 +11,7 @@ import cn.parking.data.entity.*;
 import cn.parking.data.service.IRolePermissionService;
 import cn.parking.data.service.IRoleService;
 import cn.parking.data.service.IUserRoleService;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
@@ -62,10 +62,10 @@ public class RoleController {
     @ApiOperation(value = "查询角色")
     public Result<IPage<Role>> getRoleByPage(@ModelAttribute Role role,@ModelAttribute PageVo page) {
         QueryWrapper<Role> qw = new QueryWrapper<>();
-        if(!ZwzNullUtils.isNull(role.getName())) {
+        if(!ANullUtils.isNull(role.getName())) {
             qw.like("name",role.getName());
         }
-        if(!ZwzNullUtils.isNull(role.getDescription())) {
+        if(!ANullUtils.isNull(role.getDescription())) {
             qw.like("description",role.getDescription());
         }
         IPage<Role> roleList = iRoleService.page(PageUtil.initMpPage(page),qw);

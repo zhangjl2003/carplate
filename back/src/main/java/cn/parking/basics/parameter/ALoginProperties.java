@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @ApiOperation(value = "登录常量类")
 @Data
 @Configuration
-public class ZwzLoginProperties {
+public class ALoginProperties {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,7 +56,7 @@ public class ZwzLoginProperties {
 
     public static final String SAVE_LOGIN_PRE = "saveLogin";
 
-    public static final String HTTP_TOKEN_PRE = "ZWZ_TOKEN_PRE:";
+    public static final String HTTP_TOKEN_PRE = "A_TOKEN_PRE:";
 
-    public static final String USER_TOKEN_PRE = "ZWZ_USER_TOKEN:";
+    public static final String USER_TOKEN_PRE = "A_USER_TOKEN:";
 }

@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @ApiOperation(value = "自定义异常")
 @Data
-public class ZwzException extends RuntimeException {
+public class AException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,12 +19,12 @@ public class ZwzException extends RuntimeException {
     @ApiModelProperty(value = "异常消息内容")
     private String msg;
 
-    public ZwzException(){
+    public AException(){
         super(DEFAULT_MSG);
         this.msg = DEFAULT_MSG;
     }
 
-    public ZwzException(String msg){
+    public AException(String msg){
         super(msg);
         this.msg = msg;
     }

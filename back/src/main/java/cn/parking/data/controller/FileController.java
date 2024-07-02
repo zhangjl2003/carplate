@@ -1,6 +1,6 @@
 package cn.parking.data.controller;
 
-import cn.parking.basics.exception.ZwzException;
+import cn.parking.basics.exception.AException;
 import cn.parking.basics.log.LogType;
 import cn.parking.basics.log.SystemLog;
 import cn.parking.basics.utils.*;
@@ -9,8 +9,8 @@ import cn.parking.data.entity.User;
 import cn.parking.data.service.IFileService;
 import cn.parking.data.service.ISettingService;
 import cn.parking.data.service.IUserService;
-import cn.parking.data.utils.ZwzFileUtils;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.AFileUtils;
+import cn.parking.data.utils.ANullUtils;
 import cn.parking.basics.baseVo.PageVo;
 import cn.parking.basics.baseVo.Result;
 import cn.parking.data.entity.File;
@@ -47,7 +47,7 @@ import java.util.Objects;
 public class FileController {
 
     @Autowired
-    private ZwzFileUtils zwzFileUtils;
+    private AFileUtils AFileUtils;
 
     @Autowired
     private IUserService iUserService;
@@ -67,13 +67,13 @@ public class FileController {
     @ResponseBody
     public Result<IPage<File>> getByCondition(@ModelAttribute File file,@ModelAttribute PageVo page) {
         QueryWrapper<File> qw = new QueryWrapper<>();
-        if(!ZwzNullUtils.isNull(file.getFKey())) {
+        if(!ANullUtils.isNull(file.getFKey())) {
             qw.eq("f_key",file.getFKey());
         }
-        if(!ZwzNullUtils.isNull(file.getType())) {
+        if(!ANullUtils.isNull(file.getType())) {
             qw.eq("type",file.getType());
         }
-        if(!ZwzNullUtils.isNull(file.getName())) {
+        if(!ANullUtils.isNull(file.getName())) {
             qw.eq("name",file.getName());
         }
         IPage<File> fileList = iFileService.page(PageUtil.initMpPage(page),qw);
@@ -115,7 +115,7 @@ public class FileController {
         }
         String toKey = "副本_" + key;
         key = file.getUrl();
-        String newUrl = zwzFileUtils.copyFile(key, toKey);
+        String newUrl = AFileUtils.copyFile(key, toKey);
         File newFile = new File().setName(file.getName()).setFKey(toKey).setSize(file.getSize()).setType(file.getType()).setLocation(file.getLocation()).setUrl(newUrl);
         iFileService.saveOrUpdate(newFile);
         return ResultUtil.data();
@@ -134,7 +134,7 @@ public class FileController {
         String oldKey = file.getFKey();
         if(!Objects.equals(newKey,oldKey)){
             oldKey = file.getUrl();
-            newUrl = zwzFileUtils.renameFile(oldKey, newKey);
+            newUrl = AFileUtils.renameFile(oldKey, newKey);
         }
         file.setName(newName);
         file.setFKey(newKey);
@@ -156,7 +156,7 @@ public class FileController {
                 file.setLocation(0);
             }
             String key = file.getUrl();
-            zwzFileUtils.deleteFile(key);
+            AFileUtils.deleteFile(key);
             iFileService.removeById(id);
         }
         return ResultUtil.data();
@@ -168,9 +168,9 @@ public class FileController {
     public void view(@PathVariable String id,@RequestParam(required = false) String filename,@RequestParam(required = false, defaultValue = "false") Boolean preview,HttpServletResponse httpServletResponse) throws IOException {
         File selectFile = iFileService.getById(id);
         if(selectFile == null){
-            throw new ZwzException("文件不存在");
+            throw new AException("文件不存在");
         }
-        if(ZwzNullUtils.isNull(filename)){
+        if(ANullUtils.isNull(filename)){
             filename =  selectFile.getFKey();
         }
         if(!preview){
@@ -182,7 +182,7 @@ public class FileController {
         if(selectFile.getSize() != null && selectFile.getSize() > 0){
             httpServletResponse.addHeader("Content-Range", "bytes " + 0 + "-" + (selectFile.getSize()-1) + "/" + selectFile.getSize());
         }
-        zwzFileUtils.view(selectFile.getUrl(), httpServletResponse);
+        AFileUtils.view(selectFile.getUrl(), httpServletResponse);
     }
 
     public OssSettingVo getOssSetting() {

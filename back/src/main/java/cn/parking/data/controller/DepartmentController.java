@@ -3,7 +3,7 @@ package cn.parking.data.controller;
 import cn.parking.basics.log.LogType;
 import cn.parking.basics.log.SystemLog;
 import cn.parking.basics.parameter.CommonConstant;
-import cn.parking.basics.exception.ZwzException;
+import cn.parking.basics.exception.AException;
 import cn.parking.basics.redis.RedisTemplateHelper;
 import cn.parking.basics.utils.CommonUtil;
 import cn.parking.basics.utils.ResultUtil;
@@ -15,7 +15,7 @@ import cn.parking.data.entity.User;
 import cn.parking.data.service.IDepartmentHeaderService;
 import cn.parking.data.service.IDepartmentService;
 import cn.parking.data.service.IUserService;
-import cn.parking.data.utils.ZwzNullUtils;
+import cn.parking.data.utils.ANullUtils;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
@@ -71,7 +71,7 @@ public class DepartmentController {
         User nowUser = securityUtil.getCurrUser();
         String key = REDIS_DEPARTMENT_PRE_STR + parentId + REDIS_STEP_STR + nowUser.getId();
         String value = redisTemplateHelper.get(key);
-        if(!ZwzNullUtils.isNull(value)){
+        if(!ANullUtils.isNull(value)){
             return new ResultUtil<List<Department>>().setData(JSON.parseArray(value,Department.class));
         }
         QueryWrapper<Department> depQw = new QueryWrapper<>();
@@ -174,11 +174,11 @@ public class DepartmentController {
         userQw.eq("department_id",id);
         long userCountInDepartment = iUserService.count(userQw);
         if(userCountInDepartment > 0L){
-            throw new ZwzException("不能删除包含员工的部门");
+            throw new AException("不能删除包含员工的部门");
         }
         Department department = iDepartmentService.getById(id);
         Department parentDepartment = null;
-        if(department != null && !ZwzNullUtils.isNull(department.getParentId())){
+        if(department != null && !ANullUtils.isNull(department.getParentId())){
             parentDepartment = iDepartmentService.getById(department.getParentId());
         }
         iDepartmentService.removeById(id);
