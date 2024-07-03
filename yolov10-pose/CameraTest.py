@@ -3,7 +3,8 @@ import cv2
 from ultralytics import YOLO
 import detect_tools as tools
 from PIL import ImageFont
-# from paddleocr import PaddleOCR
+import numpy as np
+from paddleocr import PaddleOCR
 import pymysql
 import requests
 import json
@@ -42,14 +43,14 @@ def insert_parking_info(car_number, entry_time, fee_id):
         return None
 
 
-def departure_(car_number, entry_time, fee_id):
+def departure_(car_number,  fee_id):
     # API URL，注意修正了端口和路径以匹配问题描述
     url = "http://localhost:8081/parking/parkingInfo/departure"
 
     # 准备要发送的数据
     new_parking_info = {
         "carNumber": car_number,
-        "entryTime": entry_time,
+        # "entryTime": entry_time,
         "feeId": fee_id
         # 可以根据需要在此处添加更多字段
     }
@@ -73,7 +74,7 @@ def departure_(car_number, entry_time, fee_id):
         # 处理请求异常，如网络问题
         print(f"请求过程中发生错误: {e}")
         return None
-departure_("苏A12345", "2023-05-01 12:00:00", 1)
+departure_("苏A12345", 1)
 # def get_license_result(ocr,image):
 #     """
 #     image:输入的车牌截取照片
@@ -81,7 +82,7 @@ departure_("苏A12345", "2023-05-01 12:00:00", 1)
 #     """
 #     #将图像放大两倍
 #     image = cv2.resize(image, (image.shape[1] * 3, image.shape[0] * 3), interpolation=cv2.INTER_CUBIC)
-#     cv2.imshow('image',image)
+#     # cv2.imshow('image',image)
 #
 #     result = ocr.ocr(image, cls=False)[0]
 #     if result:
@@ -102,7 +103,7 @@ departure_("苏A12345", "2023-05-01 12:00:00", 1)
 # ocr = PaddleOCR(use_angle_cls=False, lang="ch", det=False, cls_model_dir=cls_model_dir,rec_model_dir=rec_model_dir)
 #
 # # 所需加载的模型目录
-# path = 'flip_v10np.pt'
+# path = 'v8s-pose.pt'
 # # 加载预训练模型
 # # conf	0.25	object confidence threshold for detection
 # # iou	0.7	intersection over union (IoU) threshold for NMS
@@ -125,7 +126,7 @@ departure_("苏A12345", "2023-05-01 12:00:00", 1)
 # while cap.isOpened():
 #     # Read a frame from the video
 #     success, frame = cap.read()
-#
+#     key_point_4 = []
 #     if success:
 #         # Run YOLOv10 inference on the frame
 #         results = model(frame)[0]
@@ -135,31 +136,54 @@ departure_("苏A12345", "2023-05-01 12:00:00", 1)
 #         class_list = [class_names[int(cls_id)] for cls_id in class_ids]
 #         print(class_list)
 #         location_list = results.boxes.xyxy.tolist()
+#         point_list = results.keypoints.cpu().numpy().xy.tolist()
+#         key_point_4 = point_list
 #         if len(location_list) >= 1:
 #             location_list = [list(map(int, e)) for e in location_list]
 #             # 截取每个车牌区域的照片
+#
+#             # 定义绿牌和蓝牌的尺寸
+#             green_license_dim = (480, 140)  # width, height
+#             blue_license_dim = (440, 140)
+#
+#             # 截取每个车牌区域的照片，并进行仿射变换
 #             license_imgs = []
-#             for each in location_list:
-#                 x1, y1, x2, y2 = each
+#             for loc, pt in zip(location_list, point_list):
+#                 x1, y1, x2, y2 = loc
+#                 cv2.circle(frame, (int(pt[0][0]),int(pt[0][1])), 5, (0, 255, 0), thickness=2)
+#                 cv2.circle(frame, (int(pt[1][0]), int(pt[1][1])), 5, (100, 100, 0), thickness=2)
+#                 cv2.circle(frame, (int(pt[2][0]), int(pt[2][1])), 5, (255, 255, 0), thickness=2)
+#                 cv2.circle(frame, (int(pt[3][0]), int(pt[3][1])), 5, (255, 0, 0), thickness=2)
+#
+#                 # 确定车牌类型
+#
+#                 print("---------------------------")
+#                 print(pt[0][0])
+#                 license_imgs = []
+#
+#
 #                 cropImg = frame[y1:y2, x1:x2]
 #                 license_imgs.append(cropImg)
+#
+#                 lights_vertices = np.float32([pt[1], pt[2], pt[3],pt[0]])
+#
+#                 target_vertices = np.float32([
+#                     [0, green_license_dim[1]-1],
+#                     [0, 0],
+#                     [green_license_dim[0]-1, 0],
+#                     [green_license_dim[0]-1, green_license_dim[1]-1]
+#                 ])
+#
+#                 M = cv2.getPerspectiveTransform(lights_vertices, target_vertices)
+#                 transformed_img = cv2.warpPerspective(frame, M, green_license_dim)
+#                 license_imgs.append(transformed_img)
+#
+#                 cropImg = frame[y1:y2, x1:x2]
 #             # 车牌识别结果
 #             lisence_res = []
 #             conf_list = []
-#             # for each in license_imgs:
-#             #     license_num, conf = get_license_result(ocr, each)
-#             #
-#             #     if license_num:
-#             #         if '-' in license_num:
-#             #             license_name = license_num.replace('-', '')
-#             #         lisence_res.append(license_num)
-#             #         conf_list.append(conf)
-#             #     else:
-#             #         lisence_res.append('无法识别')
-#             #         conf_list.append(0)
-#             # for text, box in zip(lisence_res, location_list):
-#             #     frame = tools.drawRectBox(frame, box, text, fontC)
-#             # 遍历许可证图片列表，对每张图片进行车牌识别
+#             # cv2.imshow("cropImg", cropImg)
+#             # cv2.imshow("crop", transformed_img)
 #             for each in license_imgs:
 #                 # 调用OCR技术对当前图片进行车牌识别，返回车牌号和识别置信度
 #                 license_num, conf = get_license_result(ocr, each)
@@ -190,7 +214,7 @@ departure_("苏A12345", "2023-05-01 12:00:00", 1)
 #                 most_common_plate, count = max(plate_count.items(), key=lambda x: x[1])
 #
 #                 # 写入数据库逻辑
-#                 insert_parking_info(most_common_plate,"3:20","c")
+#                 # insert_parking_info(most_common_plate,"3:20","c")
 #
 #                 # 重置计数器和计数字典
 #                 frame_counter = 0
@@ -199,7 +223,8 @@ departure_("苏A12345", "2023-05-01 12:00:00", 1)
 #             for text, box in zip(lisence_res, location_list):
 #                 # 使用工具函数在视频帧上绘制矩形框，并显示识别结果
 #                 frame = tools.drawRectBox(frame, box, text, fontC)
-#
+#         print(key_point_4[0])
+#         #
 #         # frame = cv2.resize(frame, dsize=None, fx=0.5, fy=0.5, interpolation=cv2.INTER_LINEAR)
 #         cv2.imshow("YOLOv8 Detection", frame)
 #
