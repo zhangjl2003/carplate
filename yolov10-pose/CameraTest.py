@@ -4,7 +4,7 @@ from ultralytics import YOLO
 import detect_tools as tools
 from PIL import ImageFont
 import numpy as np
-from paddleocr import PaddleOCR
+# from paddleocr import PaddleOCR
 import pymysql
 import requests
 import json
