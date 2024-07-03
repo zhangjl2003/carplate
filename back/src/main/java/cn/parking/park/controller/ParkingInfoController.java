@@ -20,9 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+import java.util.Optional;
+//import java.util.Optional.*
+import java.time.Duration;
 /**
  * @author zjl
  *
@@ -83,48 +86,95 @@ public class ParkingInfoController {
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ApiOperation(value = "新增停车信息")
     public Result<ParkingInfo> insert(ParkingInfo parkingInfo){
-        System.out.println("User Info:"+parkingInfo.toString());
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("carNumber:"+parkingInfo.getCarNumber());
-        QueryWrapper<Vehicle> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("car_number", parkingInfo.getCarNumber()); // 构建查询条件
-
-        queryWrapper.last("limit 1");
-        Vehicle car = iVehicleService.getOne(queryWrapper);
-        if(car == null) {
-            iParkingInfoService.saveOrUpdate(parkingInfo);
-            return new ResultUtil<ParkingInfo>().setData(parkingInfo);
-        }else{
-
-            parkingInfo.setUserId(car.getOwnerId());
-            iParkingInfoService.saveOrUpdate(parkingInfo);
-            return new ResultUtil<ParkingInfo>().setData(parkingInfo);
+        QueryWrapper<ParkingInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("car_number", parkingInfo.getCarNumber());
+        // 查询所有具有相同car_number的ParkingInfo记录
+        List<ParkingInfo> existingParkingInfos = iParkingInfoService.list(queryWrapper);
+        // 检查是否存在departure_time为空的记录
+        boolean hasNullDepartureTime = existingParkingInfos.stream()
+                .anyMatch(pi -> pi.getDepartureTime() == null);
+        if (hasNullDepartureTime) {
+            return new ResultUtil<ParkingInfo>().setErrorMsg("存在未完成的停车记录，无法新增停车信息");
+        } else {
+            QueryWrapper<Vehicle> qw = new QueryWrapper<>();
+            qw.eq("car_number", parkingInfo.getCarNumber());
+            qw.last("limit 1");
+            Vehicle car = iVehicleService.getOne(qw);
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedNow = now.format(formatter);
+            parkingInfo.setEntryTime(formattedNow);
+            if(car == null) {
+                iParkingInfoService.saveOrUpdate(parkingInfo);
+                return new ResultUtil<ParkingInfo>().setData(parkingInfo);
+            }else{
+                parkingInfo.setUserId(car.getOwnerId());
+                iParkingInfoService.saveOrUpdate(parkingInfo);
+                return new ResultUtil<ParkingInfo>().setData(parkingInfo);
+            }
         }
-//        if(parkingData.getCost().compareTo(ic.getBalance()) > 0) {
-//            return ResultUtil.error("您IC卡余额不足");
-//        }
 
-//        return new ResultUtil<ParkingInfo>().setData(parkingInfo);
     }
     @RequestMapping(value = "/departure", method = RequestMethod.POST)
     @ApiOperation(value = "出库")
     public Result<ParkingInfo> departure(ParkingInfo parkingInfo){
-        QueryWrapper<FeeScale> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("fee_type", parkingInfo.getFeeId()); // 构建查询条件
+        QueryWrapper<ParkingInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("car_number", parkingInfo.getCarNumber());
+        // 查询所有具有相同car_number的ParkingInfo记录
+        List<ParkingInfo> existingParkingInfos = iParkingInfoService.list(queryWrapper);
 
-//        queryWrapper.last("limit 1");
-        FeeScale feescale = iFeeScaleService.getOne(queryWrapper);
-        if(feescale == null){
-            parkingInfo.setFee("500"); // 假设totalFee是ParkingInfo中用于存储总费用的字段
-            // 保存或更新停车信息
+        System.out.println("aaaaaa"+existingParkingInfos.get(0).getDepartureTime());
+        // 检查是否存在departure_time为空的记录
+        // 使用Stream API从列表中找到第一个departureTime为null的ParkingInfo
+        Optional<ParkingInfo> parkingInfoWithNullDepartureTime = existingParkingInfos.stream()
+                .filter(pi -> pi.getDepartureTime() == null||pi.getDepartureTime() == "")
+                .findFirst();
+        if (parkingInfoWithNullDepartureTime.isPresent()) {
+            ParkingInfo foundParkingInfo = parkingInfoWithNullDepartureTime.get();
+            // 在这里处理foundParkingInfo，它是departureTime为null的ParkingInfo对象
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // 你可以在这里设置departureTime为当前时间
+            QueryWrapper<FeeScale> qw = new QueryWrapper<>();
+            qw.eq("fee_type", foundParkingInfo.getFeeId()); //
+            queryWrapper.last("limit 1");
+            FeeScale feescale = iFeeScaleService.getOne(qw);
+            // 获取当前时间作为departureTime
+            LocalDateTime departureTime = LocalDateTime.now();
+            LocalDateTime entryTime = LocalDateTime.parse(foundParkingInfo.getEntryTime(), formatter);
+            foundParkingInfo.setDepartureTime(departureTime.format(formatter));
+// 计算两个时间点之间的时间差（使用Duration）
+            Duration duration = Duration.between(entryTime, departureTime);
+            long minutes = duration.toMinutes();
+// 或者使用ChronoUnit直接计算分钟数
+            long minutesByChronoUnit = java.time.temporal.ChronoUnit.MINUTES.between(entryTime, departureTime);
+// 输出结果
+            System.out.println("Time difference in minutes (using Duration): " + minutes);
+            System.out.println("Time difference in minutes (using ChronoUnit): " + minutesByChronoUnit);
 
+            double startfee = Double.parseDouble(feescale.getStartPrice());
+            double freetime = Double.parseDouble(feescale.getFreeTime());
+            double beyondfee = Double.parseDouble(feescale.getBeyondPrice());
+            if (minutes <= freetime) {
+                foundParkingInfo.setFee("0");
+            } else {
+                foundParkingInfo.setFee(String.valueOf(startfee + (minutes - freetime) * beyondfee));
+            }
+            // 输出结果
+//            System.out.println("Time difference in minutes (using Duration): " + duration);
+////        System.out.println("Time difference in minutes (using ChronoUnit): " + minutesByChronoUnit);
+//            iParkingInfoService.saveOrUpdate(parkingInfo);
+////        parkingInfo.setEntryTime(String(parkingInfo.getCreateTime()));
+//            System.out.println("[[[[[[[[[[[[[[[");
+//            System.out.println(parkingInfo.getCreateTime());
+////        return new ResultUtil<ParkingInfo>().setData(parkingInfo);
+//
+            iParkingInfoService.saveOrUpdate(foundParkingInfo);
+
+            return new ResultUtil<ParkingInfo>().setData(foundParkingInfo);
         }else{
-            parkingInfo.setFee("600");
-            // 保存或更新停车信息
-
+            System.out.println("++++++++++++++");
+            return new ResultUtil<ParkingInfo>().setErrorMsg("yitingche，无法新增停车信息");
         }
-        iParkingInfoService.saveOrUpdate(parkingInfo);
-        return new ResultUtil<ParkingInfo>().setData(parkingInfo);
 
 
 //        if (feescale == null) {
